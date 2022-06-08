@@ -10,3 +10,4 @@ add_executable(friday_the_thirteenth chapter1/section1_2/friday_the_thirteenth.c
 add_executable(broken_necklace chapter1/section1_2/broken_necklace.cpp)
 add_executable(milking_cows chapter1/section1_3/milking_cows.cpp)
 add_executable(transformations chapter1/section1_3/transformations.cpp)
+add_executable(name_that_number chapter1/section1_3/name_that_number.cpp)
