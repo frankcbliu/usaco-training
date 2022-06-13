@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 project(usaco_training)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 add_executable(usaco_training chapter1/section1_2/test.cpp)
 add_executable(your_ride_is_here chapter1/section1_2/your_ride_is_here.cpp)
@@ -15,3 +15,4 @@ add_executable(palindromic_squares chapter1/section1_3/palindromic_squares.cpp)
 add_executable(dual_palindromes chapter1/section1_3/dual_palindromes.cpp)
 add_executable(mixing_milk chapter1/section1_4/mixing_milk.cpp)
 add_executable(barn_repair chapter1/section1_4/barn_repair.cpp)
+add_executable(prime_cryptarithm chapter1/section1_4/prime_cryptarithm.cpp)
