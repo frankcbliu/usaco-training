@@ -25,13 +25,13 @@ bool circle_exist() {
     int pos = start;
     for (int count = 0; count < N; ++count) { // 13. 通过 N 次步进，判断有无循环
       pos = next_on_right[partner[pos]];
-      /**
-       *  14. 如果没有循环，也就是会存在一个 i 点，右边没有任何节点。
-       *  而 next 数组中的值都初始化为 0 了，值是从 1 -> N , 所以 next_on_right[0] == 0,
-       *  那么如果没有循环，最终 next_on_right[i] 的值一定等于 0
-       */
-      if (pos != 0) return true;
     }
+    /**
+    *  14. 如果没有循环，也就是会存在一个 i 点，右边没有任何节点。
+    *  而 next 数组中的值都初始化为 0 了，值是从 1 -> N , 所以 next_on_right[0] == 0,
+    *  那么如果没有循环，最终 next_on_right[i] 的值一定等于 0
+    */
+    if (pos != 0) return true;
   }
   return false;
 }
@@ -82,11 +82,10 @@ int main() {
          * 否则，就需要考虑之前的点 next_on_right[i] 和 现在的 j 点哪个更近
          */
         if (next_on_right[i] == 0 ||
-            X[j] < X[next_on_right[i]])
+            X[j] - X[i] < X[next_on_right[i]] - X[i])
           next_on_right[i] = j;
     }
   }
-
 
   // 1. 输出结果
   ofstream fout("wormhole.out");
