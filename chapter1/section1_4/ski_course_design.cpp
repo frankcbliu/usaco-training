@@ -21,24 +21,29 @@ int hills[MAX_N];
 
 // 2. 思考如何构建递归函数
 int solve() {
-  int res = 0x7ffffff;
+  int min_cost = 0x7ffffff;
   int max_v = 0;
   for (int i = 1; i <= N; ++i) {
     max_v = max(hills[i], max_v);
   }
 
   for (int i = 0; i <= max_v - 17; ++i) { // 高度区间
-    int cnt = 0;
+    int cost = 0;
     for (int j = 1; j <= N; ++j) { // john 的 hills
-      if (hills[j] < i || hills[j] > i + 17) { // 在区间外的才需要考虑计算
-        int a = abs(i - hills[j]);
-        int b = abs(i + 17 - hills[j]);
-        cnt += min(a * a, b * b);
+      if (i <= hills[j] && hills[j] <= i + 17) continue;
+      else { // 在区间外的才需要考虑计算
+        int x = min(abs(i - hills[j]), abs(i + 17 - hills[j]));
+        cost += x * x;
       }
+//      if (hills[j] < i || hills[j] > i + 17) { // 在区间外的才需要考虑计算
+//        int a = abs(i - hills[j]);
+//        int b = abs(i + 17 - hills[j]);
+//        cost += min(a * a, b * b);
+//      }
     }
-    res = min(cnt, res);
+    min_cost = min(cost, min_cost);
   }
-  return res;
+  return min_cost;
 }
 
 
