@@ -10,34 +10,28 @@ LANG: C++
 #include <fstream>
 #include <algorithm>
 #include <vector>
-#include <set>
 #include <cassert>
 
 using namespace std;
 
 int N, M; // n: 3~25  m: 1~250
-int arr[26];
-vector<int> list;
-vector<pair<int, int>> res;
+vector<pair<int, int>> ans;
+bool m[2 * 250 * 250 + 1];
 
-bool check(int i, int v) {
-  if (i == 0) return true;
-  if (i == 1 && v > arr[0]) return true;
-  if (i >= 2 && (v - arr[i - 1] == arr[i - 1] - arr[i - 2])) return true;
-  return false;
+bool check(int a0, int d) {
+  for (int n = 0; n < N; ++n) {
+    if (!m[a0 + n * d]) return false;
+  }
+  return true;
 }
 
-void dfs(int depth) {
-  if (depth == N) {
-    res.emplace_back(arr[0], arr[1] - arr[0]);
-    return;
-  }
-
-  for (int j: list) {
-    if (check(depth, j)) {
-      arr[depth] = j;
-      dfs(depth + 1);
-      arr[depth] = 0;
+void force_search() {
+  int m2 = 2 * M * M;
+  for (int a0 = 0; a0 < m2; ++a0) {
+    for (int d = 1; d <= (m2 - a0) / (N - 1); ++d) { // 关键优化点 d <= (2*M^2 - a0) / (n-1)
+      if (check(a0, d)) {
+        ans.emplace_back(d, a0);
+      }
     }
   }
 }
@@ -46,27 +40,17 @@ int main() {
   ofstream fout("ariprog.out");
   ifstream fin("ariprog.in");
   fin >> N >> M;
-  set<int> t;
-  for (int i = 0; i <= M; ++i) {
-    for (int j = 0; j <= M; ++j) {
-      t.insert(i * i + j * j);
-    }
-  }
-  for (auto item: t) {
-    list.push_back(item);
-  }
-  cout << list.size() << endl;
-  dfs(0);
-  sort(res.begin(), res.end(), [](pair<int, int> a, pair<int, int> b) {
-      if (a.second == b.second)
-        return a.first < b.first;
-      else
-        return a.second < b.second;
-  });
-  for (auto r: res) {
-    fout << r.first << " " << r.second << endl;
-  }
-  if (res.empty())
+  for (int i = 0; i <= M; ++i)
+    for (int j = 0; j <= M; ++j)
+      m[i * i + j * j] = true;
+
+  // 暴力搜索
+  force_search();
+  // 对结果进行排序
+  sort(ans.begin(), ans.end());
+  for (auto r: ans)
+    fout << r.second << " " << r.first << endl;
+  if (ans.empty())
     fout << "NONE" << endl;
   return 0;
 }

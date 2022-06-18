@@ -22,7 +22,7 @@ void show(const vector<int> &arr) {
   cout << endl;
 }
 
-set<vector<int>> res;
+set<vector<int>> ans;
 
 // 给定某位数上的数字 i, 以及位数上的范围 n, 生成这位数上的可能范围 (也就是跟这个密码足够接近的数字)
 vector<int> generate_key(int i, int n) {
@@ -39,7 +39,7 @@ void generate(const vector<int>& arr1, const vector<int>& arr2, const vector<int
   for (auto a: arr1) {
     for (auto b: arr2) {
       for (auto c: arr3) {
-        res.insert({a, b, c});
+        ans.insert({a, b, c});
       }
     }
   }
@@ -65,6 +65,6 @@ int main() {
   generate_vec(c1, n);
   generate_vec(c2, n);
   // 3. 输出结果
-  fout << res.size() << endl;
+  fout << ans.size() << endl;
   return 0;
 }
