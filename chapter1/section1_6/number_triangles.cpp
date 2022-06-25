@@ -8,42 +8,54 @@ LANG: C++
 /* LANG can be C++11 or C++14 for those more recent releases */
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <vector>
 
 using namespace std;
-vector<vector<int>> arr;
-int max_sum = 0;
+
+int dp[1000][1000];
+int R;
+int ans = 0;
+
+/**
+ * 两种办法，自底向上会简单很多，自顶向下则还需要考虑边界问题
+ */
+void solve() { // 自顶向下
+  for (int i = 1; i < R; ++i) {
+    for (int j = 0; j <= i; ++j) {
+      if (j == 0) {
+        dp[i][j] += dp[i - 1][j];
+      } else if (j == i) {
+        dp[i][j] += dp[i - 1][j - 1];
+      } else
+        dp[i][j] += max(dp[i - 1][j - 1], dp[i - 1][j]);
+    }
+  }
+}
 
 int main() {
-  // handle input
   ifstream fin("numtri.in");
-  int R;
   fin >> R;
   for (int i = 0; i < R; ++i) {
-    vector<int> arr_j;
     for (int j = 0; j <= i; ++j) {
-      int t;
-      fin >> t;
-      int max_v = t;
-      for (int k = j - 1; k <= j; ++k) {
-        if (0 <= k && k < i && i > 0) {
-          max_v = max(max_v, t + arr[i - 1][k]);
-        }
-      }
-      arr_j.push_back(max_v);
+      fin >> dp[i][j];
     }
-    arr.push_back(arr_j);
   }
   fin.close();
-  // handle solve
-  for (int i = 0; i < R; ++i) {
-    max_sum = max(max_sum, arr[R - 1][i]);
+  // 自底向上
+  for (int i = R - 2; i >= 0; --i) {
+    for (int j = 0; j <= i; ++j) {
+      dp[i][j] += max(dp[i + 1][j], dp[i + 1][j + 1]);
+    }
   }
-
+  ans = dp[0][0];
+  // 自顶向下
+//  solve();
+//  for (int i = 0; i < R; ++i) {
+//    ans = max(ans, dp[R - 1][i]);
+//  }
   // handle output
   ofstream fout("numtri.out");
-  fout << max_sum << endl;
+  fout << ans << endl;
   fout.close();
   return 0;
 }
